@@ -11,7 +11,15 @@ import rateLimit from 'express-rate-limit';
 import { env } from './config/env';
 import { RATE_LIMITS, HTTP_STATUS } from './config/constants';
 import { httpLogger, errorHandler, notFoundHandler } from './middleware';
-import { authRoutes, accountRoutes, incomeTypeRoutes, incomeRoutes } from './routes';
+import {
+  authRoutes,
+  accountRoutes,
+  incomeTypeRoutes,
+  incomeRoutes,
+  expenseTypeRoutes,
+  expenseRoutes,
+  transferRoutes,
+} from './routes';
 
 /**
  * Create and configure Express application
@@ -79,9 +87,9 @@ export function createApp(): Application {
   app.use('/api/v1/accounts', accountRoutes);
   app.use('/api/v1/income-types', incomeTypeRoutes);
   app.use('/api/v1/incomes', incomeRoutes);
-  // app.use('/api/v1/expense-types', expenseTypeRoutes);
-  // app.use('/api/v1/expenses', expenseRoutes);
-  // app.use('/api/v1/transfers', transferRoutes);
+  app.use('/api/v1/expense-types', expenseTypeRoutes);
+  app.use('/api/v1/expenses', expenseRoutes);
+  app.use('/api/v1/transfers', transferRoutes);
   // app.use('/api/v1/subscriptions', subscriptionRoutes);
   // app.use('/api/v1/dashboard', dashboardRoutes);
 
