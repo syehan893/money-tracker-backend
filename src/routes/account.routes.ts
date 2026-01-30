@@ -1,0 +1,100 @@
+/**
+ * Account Routes
+ */
+
+import { Router } from 'express';
+import { accountController } from '../controllers/account.controller';
+import { authenticateUser } from '../middleware/auth.middleware';
+import { validate } from '../middleware/validation.middleware';
+import {
+  createAccountValidator,
+  updateAccountValidator,
+  accountIdValidator,
+  accountFiltersValidator,
+} from '../validators/account.validator';
+import type { AuthenticatedRequest } from '../types/api.types';
+
+const router = Router();
+
+// All account routes require authentication
+router.use(authenticateUser);
+
+/**
+ * GET /api/v1/accounts/summary
+ * Get accounts summary for dashboard
+ * Note: This must come before /:id to avoid treating "summary" as an ID
+ */
+router.get(
+  '/summary',
+  accountController.getAccountsSummary.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.getAccountsSummary>
+  ) => Promise<void>
+);
+
+/**
+ * GET /api/v1/accounts
+ * Get all accounts with optional filters
+ */
+router.get(
+  '/',
+  validate(accountFiltersValidator),
+  accountController.getAccounts.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.getAccounts>
+  ) => Promise<void>
+);
+
+/**
+ * GET /api/v1/accounts/:id
+ * Get a specific account by ID
+ */
+router.get(
+  '/:id',
+  validate(accountIdValidator),
+  accountController.getAccountById.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.getAccountById>
+  ) => Promise<void>
+);
+
+/**
+ * POST /api/v1/accounts
+ * Create a new account
+ */
+router.post(
+  '/',
+  validate(createAccountValidator),
+  accountController.createAccount.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.createAccount>
+  ) => Promise<void>
+);
+
+/**
+ * PUT /api/v1/accounts/:id
+ * Update an existing account
+ */
+router.put(
+  '/:id',
+  validate(updateAccountValidator),
+  accountController.updateAccount.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.updateAccount>
+  ) => Promise<void>
+);
+
+/**
+ * DELETE /api/v1/accounts/:id
+ * Soft delete an account
+ */
+router.delete(
+  '/:id',
+  validate(accountIdValidator),
+  accountController.deleteAccount.bind(accountController) as (
+    req: AuthenticatedRequest,
+    ...args: Parameters<typeof accountController.deleteAccount>
+  ) => Promise<void>
+);
+
+export default router;
