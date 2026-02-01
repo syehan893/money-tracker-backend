@@ -9,7 +9,6 @@ import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
 import { asyncHandler } from '../utils/asyncHandler';
 import { param } from 'express-validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 const router = Router();
 
@@ -38,10 +37,7 @@ router.get('/overview', asyncHandler(dashboardController.getOverview.bind(dashbo
 router.get(
   '/monthly-summary/:year/:month',
   validate(monthlySummaryValidator),
-  dashboardController.getMonthlySummary.bind(dashboardController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof dashboardController.getMonthlySummary>
-  ) => Promise<void>
+  asyncHandler(dashboardController.getMonthlySummary.bind(dashboardController))
 );
 
 /**

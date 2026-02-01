@@ -115,7 +115,7 @@ export function authenticateUser(req: Request, res: Response, next: NextFunction
  * Optional authentication middleware
  * Attaches user if token is present, but doesn't block request if not
  */
-export function optionalAuth(req: Request, res: Response, next: NextFunction): void {
+export function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
   void (async (): Promise<void> => {
     try {
       const authHeader = req.headers.authorization;

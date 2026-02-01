@@ -57,7 +57,7 @@ export class AuthRepository {
 
     const { data, error } = await supabase
       .from('profiles')
-      .update(updates)
+      .update(updates as unknown as never)
       .eq('id', userId)
       .select()
       .single();

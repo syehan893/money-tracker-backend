@@ -119,7 +119,7 @@ export class SubscriptionRepository {
       .insert({
         ...data,
         user_id: userId,
-      })
+      } as unknown as never)
       .select(
         `
         *,
@@ -152,7 +152,7 @@ export class SubscriptionRepository {
 
     const { data: subscription, error } = await supabase
       .from('subscriptions')
-      .update(data)
+      .update(data as unknown as never)
       .eq('id', subscriptionId)
       .eq('user_id', userId)
       .select(

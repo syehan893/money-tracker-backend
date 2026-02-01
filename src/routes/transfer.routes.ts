@@ -13,7 +13,6 @@ import {
   transferIdValidator,
   transferFiltersValidator,
 } from '../validators/transfer.validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 const router = Router();
 
@@ -37,10 +36,7 @@ router.get(
 router.get(
   '/:id',
   validate(transferIdValidator),
-  transferController.getTransferById.bind(transferController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof transferController.getTransferById>
-  ) => Promise<void>
+  asyncHandler(transferController.getTransferById.bind(transferController))
 );
 
 /**

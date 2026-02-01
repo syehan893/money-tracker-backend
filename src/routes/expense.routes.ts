@@ -18,7 +18,6 @@ import {
   expenseFiltersValidator,
   expenseMonthlySummaryValidator,
 } from '../validators/expense.validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 // ============================================
 // EXPENSE TYPE ROUTES
@@ -135,10 +134,7 @@ expenseRouter.get(
 expenseRouter.post(
   '/',
   validate(createExpenseValidator),
-  expenseController.createExpense.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.createExpense>
-  ) => Promise<void>
+  asyncHandler(expenseController.createExpense.bind(expenseController))
 );
 
 /**

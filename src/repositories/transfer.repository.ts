@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access */
 /**
  * Transfer Repository
  * Handles database operations for transfers
@@ -119,7 +120,7 @@ export class TransferRepository {
       .insert({
         ...data,
         user_id: userId,
-      })
+      } as any)
       .select(
         `
         *,

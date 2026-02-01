@@ -14,7 +14,6 @@ import {
   accountIdValidator,
   accountFiltersValidator,
 } from '../validators/account.validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 const router = Router();
 
@@ -55,10 +54,7 @@ router.get(
 router.post(
   '/',
   validate(createAccountValidator),
-  accountController.createAccount.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.createAccount>
-  ) => Promise<void>
+  asyncHandler(accountController.createAccount.bind(accountController))
 );
 
 /**
@@ -68,10 +64,7 @@ router.post(
 router.put(
   '/:id',
   validate(updateAccountValidator),
-  accountController.updateAccount.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.updateAccount>
-  ) => Promise<void>
+  asyncHandler(accountController.updateAccount.bind(accountController))
 );
 
 /**
