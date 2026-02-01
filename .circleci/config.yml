@@ -66,34 +66,30 @@ jobs:
             echo "SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}" >> .env
             echo "CORS_ORIGIN=${CORS_ORIGIN}" >> .env
       - run:
-          name: Update Managed Instance Group
+          name: Deploy to GCE Instance
           command: |
-            # This command triggers a rolling update for the Managed Instance Group
-            # It assumes you have an existing MIG named 'money-tracker-mig'
-            
-            # If you are using a standalone VM (Container Optimized OS), uncomment the lines below instead:
-            # gcloud compute instances update-container money-tracker-backend \
-            #   --container-image gcr.io/${GOOGLE_PROJECT_ID}/<< pipeline.parameters.image-name >>:${CIRCLE_SHA1} \
-            #   --container-env-file .env \
-            #   --zone ${GOOGLE_COMPUTE_ZONE}
-
-            # For Managed Instance Group (Recommended):
-            # First, we need to create a new instance template with the new image
-            TEMPLATE_NAME="money-tracker-template-${CIRCLE_SHA1}"
-            
-            echo "Creating new instance template: $TEMPLATE_NAME"
-            gcloud compute instance-templates create-with-container $TEMPLATE_NAME \
+            # Update the container on the existing instance
+            # Assumes an instance named 'money-tracker-backend' exists and was created with Container-Optimized OS
+            gcloud compute instances update-container money-tracker-backend \
               --container-image gcr.io/${GOOGLE_PROJECT_ID}/<< pipeline.parameters.image-name >>:${CIRCLE_SHA1} \
-              --machine-type e2-small \
-              --tags http-server,https-server \
               --container-env-file .env \
-              --region ${GOOGLE_COMPUTE_REGION}
+              --zone ${GOOGLE_COMPUTE_ZONE}
 
-            echo "Rolling update to MIG..."
-            gcloud compute instance-groups managed rolling-action start-update money-tracker-mig \
-              --version template=$TEMPLATE_NAME \
-              --region ${GOOGLE_COMPUTE_REGION} \
-              --max-unavailable 1
+            # If you are using Managed Instance Groups, uncomment the block below and comment out the lines above:
+            # TEMPLATE_NAME="money-tracker-template-${CIRCLE_SHA1}"
+            # echo "Creating new instance template: $TEMPLATE_NAME"
+            # gcloud compute instance-templates create-with-container $TEMPLATE_NAME \
+            #   --container-image gcr.io/${GOOGLE_PROJECT_ID}/<< pipeline.parameters.image-name >>:${CIRCLE_SHA1} \
+            #   --machine-type e2-small \
+            #   --tags http-server,https-server \
+            #   --container-env-file .env \
+            #   --region ${GOOGLE_COMPUTE_REGION}
+            #
+            # echo "Rolling update to MIG..."
+            # gcloud compute instance-groups managed rolling-action start-update money-tracker-mig \
+            #   --version template=$TEMPLATE_NAME \
+            #   --region ${GOOGLE_COMPUTE_REGION} \
+            #   --max-unavailable 1
 
 workflows:
   version: 2
