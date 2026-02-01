@@ -1,0 +1,114 @@
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@3.0.1
+  gcp-gcr: circleci/gcp-gcr@0.15.0
+
+parameters:
+  # Set these in your CircleCI Project Settings -> Environment Variables
+  # GOOGLE_PROJECT_ID
+  # GOOGLE_COMPUTE_ZONE (e.g., us-central1-a)
+  # GCLOUD_SERVICE_KEY (base64 encoded JSON key)
+  image-name:
+    type: string
+    default: "money-tracker-api"
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:18.19
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - run:
+          name: Run Lint
+          command: npm run lint
+      - run:
+          name: Build Project
+          command: npm run build
+      # Add test step here if you have tests
+      # - run: npm test
+
+  build-and-push-image:
+    description: Build and push Docker image to Google Container Registry
+    machine:
+      image: ubuntu-2204:current
+    steps:
+      - checkout
+      - gcp-gcr/gcr-auth
+      - gcp-gcr/build-image:
+          image: << pipeline.parameters.image-name >>
+          tag: ${CIRCLE_SHA1}
+      - gcp-gcr/push-image:
+          image: << pipeline.parameters.image-name >>
+          tag: ${CIRCLE_SHA1}
+      - gcp-gcr/tag-image:
+          image: << pipeline.parameters.image-name >>
+          source-tag: ${CIRCLE_SHA1}
+          target-tag: latest
+
+  deploy-to-gce:
+    description: Deploy to Google Compute Engine (Managed Instance Group)
+    docker:
+      - image: google/cloud-sdk:alpine
+    steps:
+      - checkout
+      - gcp-cli/setup
+      - run:
+          name: Create Env File
+          command: |
+            echo "NODE_ENV=production" > .env
+            echo "PORT=3000" >> .env
+            echo "SUPABASE_URL=${SUPABASE_URL}" >> .env
+            echo "SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}" >> .env
+            echo "SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}" >> .env
+            echo "CORS_ORIGIN=${CORS_ORIGIN}" >> .env
+      - run:
+          name: Update Managed Instance Group
+          command: |
+            # This command triggers a rolling update for the Managed Instance Group
+            # It assumes you have an existing MIG named 'money-tracker-mig'
+            
+            # If you are using a standalone VM (Container Optimized OS), uncomment the lines below instead:
+            # gcloud compute instances update-container money-tracker-backend \
+            #   --container-image gcr.io/${GOOGLE_PROJECT_ID}/<< pipeline.parameters.image-name >>:${CIRCLE_SHA1} \
+            #   --container-env-file .env \
+            #   --zone ${GOOGLE_COMPUTE_ZONE}
+
+            # For Managed Instance Group (Recommended):
+            # First, we need to create a new instance template with the new image
+            TEMPLATE_NAME="money-tracker-template-${CIRCLE_SHA1}"
+            
+            echo "Creating new instance template: $TEMPLATE_NAME"
+            gcloud compute instance-templates create-with-container $TEMPLATE_NAME \
+              --container-image gcr.io/${GOOGLE_PROJECT_ID}/<< pipeline.parameters.image-name >>:${CIRCLE_SHA1} \
+              --machine-type e2-small \
+              --tags http-server,https-server \
+              --container-env-file .env \
+              --region ${GOOGLE_COMPUTE_REGION}
+
+            echo "Rolling update to MIG..."
+            gcloud compute instance-groups managed rolling-action start-update money-tracker-mig \
+              --version template=$TEMPLATE_NAME \
+              --region ${GOOGLE_COMPUTE_REGION} \
+              --max-unavailable 1
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build-and-test
+      - build-and-push-image:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: main
+      - deploy-to-gce:
+          requires:
+            - build-and-push-image
+          filters:
+            branches:
+              only: main
