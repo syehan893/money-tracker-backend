@@ -19,6 +19,8 @@ import {
   expenseTypeRoutes,
   expenseRoutes,
   transferRoutes,
+  subscriptionRoutes,
+  dashboardRoutes,
 } from './routes';
 
 /**
@@ -90,8 +92,8 @@ export function createApp(): Application {
   app.use('/api/v1/expense-types', expenseTypeRoutes);
   app.use('/api/v1/expenses', expenseRoutes);
   app.use('/api/v1/transfers', transferRoutes);
-  // app.use('/api/v1/subscriptions', subscriptionRoutes);
-  // app.use('/api/v1/dashboard', dashboardRoutes);
+  app.use('/api/v1/subscriptions', subscriptionRoutes);
+  app.use('/api/v1/dashboard', dashboardRoutes);
 
   // 404 handler for unmatched routes
   app.use(notFoundHandler);
