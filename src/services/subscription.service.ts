@@ -26,10 +26,7 @@ export class SubscriptionService {
     accessToken: string,
     filters?: SubscriptionFilters & { page?: number; limit?: number }
   ): Promise<PaginatedResponse<SubscriptionWithRelations>> {
-    const { page, limit, offset } = parsePaginationParams(
-      filters?.page,
-      filters?.limit
-    );
+    const { page, limit, offset } = parsePaginationParams(filters?.page, filters?.limit);
 
     const { subscriptions, total } = await subscriptionRepository.findAll(
       userId,
@@ -63,11 +60,7 @@ export class SubscriptionService {
     subscriptionId: string,
     accessToken: string
   ): Promise<SubscriptionWithRelations> {
-    const subscription = await subscriptionRepository.findById(
-      userId,
-      subscriptionId,
-      accessToken
-    );
+    const subscription = await subscriptionRepository.findById(userId, subscriptionId, accessToken);
 
     if (!subscription) {
       throw new NotFoundError('Subscription', subscriptionId);

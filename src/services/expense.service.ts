@@ -148,10 +148,7 @@ export class ExpenseService {
     accessToken: string,
     filters?: ExpenseFilters & { page?: number; limit?: number }
   ): Promise<PaginatedResponse<ExpenseWithRelations>> {
-    const { page, limit, offset } = parsePaginationParams(
-      filters?.page,
-      filters?.limit
-    );
+    const { page, limit, offset } = parsePaginationParams(filters?.page, filters?.limit);
 
     const { expenses, total } = await expenseRepository.findAll(
       userId,
@@ -267,12 +264,7 @@ export class ExpenseService {
       }
     } else if (data.amount && data.amount > existing.amount) {
       // If increasing amount on same account, check balance
-      const additionalAmount = data.amount - existing.amount;
-      const account = await accountService.getAccountById(
-        userId,
-        existing.account_id,
-        accessToken
-      );
+      const account = await accountService.getAccountById(userId, existing.account_id, accessToken);
       // Current balance + existing expense amount is the available balance
       const availableBalance = Number(account.balance) + existing.amount;
       if (availableBalance < data.amount) {

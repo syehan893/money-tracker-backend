@@ -6,6 +6,7 @@ import { Router } from 'express';
 import { incomeTypeController, incomeController } from '../controllers/income.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   createIncomeTypeValidator,
   updateIncomeTypeValidator,
@@ -16,7 +17,6 @@ import {
   incomeFiltersValidator,
   monthlySummaryValidator,
 } from '../validators/income.validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 // ============================================
 // INCOME TYPE ROUTES
@@ -33,10 +33,7 @@ incomeTypeRouter.use(authenticateUser);
  */
 incomeTypeRouter.get(
   '/',
-  incomeTypeController.getIncomeTypes.bind(incomeTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeTypeController.getIncomeTypes>
-  ) => Promise<void>
+  asyncHandler(incomeTypeController.getIncomeTypes.bind(incomeTypeController))
 );
 
 /**
@@ -46,10 +43,7 @@ incomeTypeRouter.get(
 incomeTypeRouter.get(
   '/:id',
   validate(incomeTypeIdValidator),
-  incomeTypeController.getIncomeTypeById.bind(incomeTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeTypeController.getIncomeTypeById>
-  ) => Promise<void>
+  asyncHandler(incomeTypeController.getIncomeTypeById.bind(incomeTypeController))
 );
 
 /**
@@ -59,10 +53,7 @@ incomeTypeRouter.get(
 incomeTypeRouter.post(
   '/',
   validate(createIncomeTypeValidator),
-  incomeTypeController.createIncomeType.bind(incomeTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeTypeController.createIncomeType>
-  ) => Promise<void>
+  asyncHandler(incomeTypeController.createIncomeType.bind(incomeTypeController))
 );
 
 /**
@@ -72,10 +63,7 @@ incomeTypeRouter.post(
 incomeTypeRouter.put(
   '/:id',
   validate(updateIncomeTypeValidator),
-  incomeTypeController.updateIncomeType.bind(incomeTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeTypeController.updateIncomeType>
-  ) => Promise<void>
+  asyncHandler(incomeTypeController.updateIncomeType.bind(incomeTypeController))
 );
 
 /**
@@ -85,10 +73,7 @@ incomeTypeRouter.put(
 incomeTypeRouter.delete(
   '/:id',
   validate(incomeTypeIdValidator),
-  incomeTypeController.deleteIncomeType.bind(incomeTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeTypeController.deleteIncomeType>
-  ) => Promise<void>
+  asyncHandler(incomeTypeController.deleteIncomeType.bind(incomeTypeController))
 );
 
 // ============================================
@@ -107,10 +92,7 @@ incomeRouter.use(authenticateUser);
  */
 incomeRouter.get(
   '/target-progress',
-  incomeController.getTargetProgress.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.getTargetProgress>
-  ) => Promise<void>
+  asyncHandler(incomeController.getTargetProgress.bind(incomeController))
 );
 
 /**
@@ -121,10 +103,7 @@ incomeRouter.get(
 incomeRouter.get(
   '/monthly/:year/:month',
   validate(monthlySummaryValidator),
-  incomeController.getMonthlySummary.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.getMonthlySummary>
-  ) => Promise<void>
+  asyncHandler(incomeController.getMonthlySummary.bind(incomeController))
 );
 
 /**
@@ -134,10 +113,7 @@ incomeRouter.get(
 incomeRouter.get(
   '/',
   validate(incomeFiltersValidator),
-  incomeController.getIncomes.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.getIncomes>
-  ) => Promise<void>
+  asyncHandler(incomeController.getIncomes.bind(incomeController))
 );
 
 /**
@@ -147,10 +123,7 @@ incomeRouter.get(
 incomeRouter.get(
   '/:id',
   validate(incomeIdValidator),
-  incomeController.getIncomeById.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.getIncomeById>
-  ) => Promise<void>
+  asyncHandler(incomeController.getIncomeById.bind(incomeController))
 );
 
 /**
@@ -160,10 +133,7 @@ incomeRouter.get(
 incomeRouter.post(
   '/',
   validate(createIncomeValidator),
-  incomeController.createIncome.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.createIncome>
-  ) => Promise<void>
+  asyncHandler(incomeController.createIncome.bind(incomeController))
 );
 
 /**
@@ -173,10 +143,7 @@ incomeRouter.post(
 incomeRouter.put(
   '/:id',
   validate(updateIncomeValidator),
-  incomeController.updateIncome.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.updateIncome>
-  ) => Promise<void>
+  asyncHandler(incomeController.updateIncome.bind(incomeController))
 );
 
 /**
@@ -186,10 +153,7 @@ incomeRouter.put(
 incomeRouter.delete(
   '/:id',
   validate(incomeIdValidator),
-  incomeController.deleteIncome.bind(incomeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof incomeController.deleteIncome>
-  ) => Promise<void>
+  asyncHandler(incomeController.deleteIncome.bind(incomeController))
 );
 
 export { incomeTypeRouter, incomeRouter };

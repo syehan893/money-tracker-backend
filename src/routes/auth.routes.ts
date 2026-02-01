@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Auth Routes
  */
@@ -7,6 +8,7 @@ import rateLimit from 'express-rate-limit';
 import { authController } from '../controllers/auth.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   registerValidator,
   loginValidator,
@@ -44,7 +46,7 @@ router.post(
   '/register',
   authLimiter,
   validate(registerValidator),
-  authController.register.bind(authController)
+  asyncHandler(authController.register.bind(authController))
 );
 
 /**
@@ -55,7 +57,7 @@ router.post(
   '/login',
   authLimiter,
   validate(loginValidator),
-  authController.login.bind(authController)
+  asyncHandler(authController.login.bind(authController))
 );
 
 /**
@@ -66,7 +68,7 @@ router.post(
   '/forgot-password',
   authLimiter,
   validate(forgotPasswordValidator),
-  authController.forgotPassword.bind(authController)
+  asyncHandler(authController.forgotPassword.bind(authController))
 );
 
 /**
@@ -77,7 +79,7 @@ router.post(
   '/reset-password',
   authLimiter,
   validate(resetPasswordValidator),
-  authController.resetPassword.bind(authController)
+  asyncHandler(authController.resetPassword.bind(authController))
 );
 
 /**
@@ -87,7 +89,7 @@ router.post(
 router.post(
   '/refresh',
   validate([body('refreshToken').notEmpty().withMessage('Refresh token is required')]),
-  authController.refreshToken.bind(authController)
+  asyncHandler(authController.refreshToken.bind(authController))
 );
 
 // Protected routes (authentication required)
@@ -102,7 +104,11 @@ router.post('/logout', authenticateUser, authController.logout.bind(authControll
  * GET /api/v1/auth/me
  * Get current user profile
  */
-router.get('/me', authenticateUser, authController.getCurrentUser.bind(authController));
+router.get(
+  '/me',
+  authenticateUser,
+  asyncHandler(authController.getCurrentUser.bind(authController))
+);
 
 /**
  * PUT /api/v1/auth/profile
@@ -112,7 +118,7 @@ router.put(
   '/profile',
   authenticateUser,
   validate(updateProfileValidator),
-  authController.updateProfile.bind(authController)
+  asyncHandler(authController.updateProfile.bind(authController))
 );
 
 export default router;

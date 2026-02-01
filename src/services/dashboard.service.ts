@@ -7,7 +7,6 @@ import { accountRepository } from '../repositories/account.repository';
 import { incomeRepository } from '../repositories/income.repository';
 import { expenseRepository } from '../repositories/expense.repository';
 import { transferRepository } from '../repositories/transfer.repository';
-import { subscriptionRepository } from '../repositories/subscription.repository';
 import type {
   DashboardOverview,
   MonthlyDashboardSummary,
@@ -169,7 +168,8 @@ export class DashboardService {
       }
     }
 
-    const percentage = totalTarget > 0 ? Math.round((summary.totalAmount / totalTarget) * 10000) / 100 : 0;
+    const percentage =
+      totalTarget > 0 ? Math.round((summary.totalAmount / totalTarget) * 10000) / 100 : 0;
 
     return {
       total: summary.totalAmount,
@@ -197,7 +197,8 @@ export class DashboardService {
       }
     }
 
-    const percentage = totalBudget > 0 ? Math.round((summary.totalAmount / totalBudget) * 10000) / 100 : 0;
+    const percentage =
+      totalBudget > 0 ? Math.round((summary.totalAmount / totalBudget) * 10000) / 100 : 0;
 
     return {
       total: summary.totalAmount,

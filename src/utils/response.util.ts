@@ -24,7 +24,7 @@ export function sendSuccess<T>(
     response.message = message;
   }
 
-  return res.status(statusCode).json(response);
+  return res.status(statusCode).json(response) as Response<ApiSuccessResponse<T>>;
 }
 
 /**
@@ -67,7 +67,7 @@ export function sendError(
     response.error.details = details;
   }
 
-  return res.status(statusCode).json(response);
+  return res.status(statusCode).json(response) as Response<ApiErrorResponse>;
 }
 
 /**

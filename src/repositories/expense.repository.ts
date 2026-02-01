@@ -8,7 +8,6 @@ import type {
   ExpenseType,
   ExpenseTypeInsert,
   ExpenseTypeUpdate,
-  Expense,
   ExpenseInsert,
   ExpenseUpdate,
   ExpenseWithRelations,
@@ -375,14 +374,15 @@ export class ExpenseRepository {
       throw parseSupabaseError(error);
     }
 
-    const typeMap = new Map<
-      string,
-      { typeName: string; amount: number; budget: number | null }
-    >();
+    const typeMap = new Map<string, { typeName: string; amount: number; budget: number | null }>();
     let totalAmount = 0;
 
     for (const expense of expenses || []) {
-      const expenseType = expense.expense_type as { id: string; name: string; budget_amount: number | null } | null;
+      const expenseType = expense.expense_type as {
+        id: string;
+        name: string;
+        budget_amount: number | null;
+      } | null;
       if (!expenseType) continue;
 
       const typeId = expenseType.id;
@@ -452,7 +452,7 @@ export class ExpenseRepository {
     }
 
     // Calculate budget status for each type with a budget
-    return (expenseTypes || []).map((type) => {
+    return ((expenseTypes as ExpenseType[]) || []).map((type) => {
       const budget = Number(type.budget_amount);
       const spent = spentMap.get(type.id) || 0;
       const remaining = Math.max(budget - spent, 0);

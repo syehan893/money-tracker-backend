@@ -143,11 +143,7 @@ export class ExpenseController {
    * GET /api/v1/expenses
    * Get all expenses with filters and pagination
    */
-  async getExpenses(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getExpenses(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { accountId, expenseTypeId, startDate, endDate, page, limit } = req.query as {
@@ -199,11 +195,7 @@ export class ExpenseController {
    * POST /api/v1/expenses
    * Create expense
    */
-  async createExpense(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async createExpense(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { accountId, expenseTypeId, amount, description, date } = req.body as CreateExpenseDto;
@@ -224,11 +216,7 @@ export class ExpenseController {
    * PUT /api/v1/expenses/:id
    * Update expense
    */
-  async updateExpense(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async updateExpense(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;
@@ -251,11 +239,7 @@ export class ExpenseController {
    * DELETE /api/v1/expenses/:id
    * Delete expense
    */
-  async deleteExpense(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async deleteExpense(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;

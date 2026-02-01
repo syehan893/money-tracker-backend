@@ -40,18 +40,13 @@ export const updateAccountValidator = [
     .isLength({ min: 1, max: 255 })
     .withMessage('Account name must be between 1 and 255 characters'),
 
-  body('isActive')
-    .optional()
-    .isBoolean()
-    .withMessage('isActive must be a boolean value'),
+  body('isActive').optional().isBoolean().withMessage('isActive must be a boolean value'),
 ];
 
 /**
  * Validation for account ID parameter
  */
-export const accountIdValidator = [
-  param('id').isUUID().withMessage('Invalid account ID format'),
-];
+export const accountIdValidator = [param('id').isUUID().withMessage('Invalid account ID format')];
 
 /**
  * Validation for account list filters
@@ -62,8 +57,5 @@ export const accountFiltersValidator = [
     .isIn(ACCOUNT_TYPE_VALUES)
     .withMessage(`Account type must be one of: ${ACCOUNT_TYPE_VALUES.join(', ')}`),
 
-  query('isActive')
-    .optional()
-    .isBoolean()
-    .withMessage('isActive must be a boolean value'),
+  query('isActive').optional().isBoolean().withMessage('isActive must be a boolean value'),
 ];

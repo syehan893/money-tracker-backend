@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Expense and Expense Type Routes
  */
@@ -6,6 +7,7 @@ import { Router } from 'express';
 import { expenseTypeController, expenseController } from '../controllers/expense.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   createExpenseTypeValidator,
   updateExpenseTypeValidator,
@@ -33,10 +35,7 @@ expenseTypeRouter.use(authenticateUser);
  */
 expenseTypeRouter.get(
   '/',
-  expenseTypeController.getExpenseTypes.bind(expenseTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseTypeController.getExpenseTypes>
-  ) => Promise<void>
+  asyncHandler(expenseTypeController.getExpenseTypes.bind(expenseTypeController))
 );
 
 /**
@@ -46,10 +45,7 @@ expenseTypeRouter.get(
 expenseTypeRouter.get(
   '/:id',
   validate(expenseTypeIdValidator),
-  expenseTypeController.getExpenseTypeById.bind(expenseTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseTypeController.getExpenseTypeById>
-  ) => Promise<void>
+  asyncHandler(expenseTypeController.getExpenseTypeById.bind(expenseTypeController))
 );
 
 /**
@@ -59,10 +55,7 @@ expenseTypeRouter.get(
 expenseTypeRouter.post(
   '/',
   validate(createExpenseTypeValidator),
-  expenseTypeController.createExpenseType.bind(expenseTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseTypeController.createExpenseType>
-  ) => Promise<void>
+  asyncHandler(expenseTypeController.createExpenseType.bind(expenseTypeController))
 );
 
 /**
@@ -72,10 +65,7 @@ expenseTypeRouter.post(
 expenseTypeRouter.put(
   '/:id',
   validate(updateExpenseTypeValidator),
-  expenseTypeController.updateExpenseType.bind(expenseTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseTypeController.updateExpenseType>
-  ) => Promise<void>
+  asyncHandler(expenseTypeController.updateExpenseType.bind(expenseTypeController))
 );
 
 /**
@@ -85,10 +75,7 @@ expenseTypeRouter.put(
 expenseTypeRouter.delete(
   '/:id',
   validate(expenseTypeIdValidator),
-  expenseTypeController.deleteExpenseType.bind(expenseTypeController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseTypeController.deleteExpenseType>
-  ) => Promise<void>
+  asyncHandler(expenseTypeController.deleteExpenseType.bind(expenseTypeController))
 );
 
 // ============================================
@@ -107,10 +94,7 @@ expenseRouter.use(authenticateUser);
  */
 expenseRouter.get(
   '/budget-status',
-  expenseController.getBudgetStatus.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.getBudgetStatus>
-  ) => Promise<void>
+  asyncHandler(expenseController.getBudgetStatus.bind(expenseController))
 );
 
 /**
@@ -121,10 +105,7 @@ expenseRouter.get(
 expenseRouter.get(
   '/monthly/:year/:month',
   validate(expenseMonthlySummaryValidator),
-  expenseController.getMonthlySummary.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.getMonthlySummary>
-  ) => Promise<void>
+  asyncHandler(expenseController.getMonthlySummary.bind(expenseController))
 );
 
 /**
@@ -134,10 +115,7 @@ expenseRouter.get(
 expenseRouter.get(
   '/',
   validate(expenseFiltersValidator),
-  expenseController.getExpenses.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.getExpenses>
-  ) => Promise<void>
+  asyncHandler(expenseController.getExpenses.bind(expenseController))
 );
 
 /**
@@ -147,10 +125,7 @@ expenseRouter.get(
 expenseRouter.get(
   '/:id',
   validate(expenseIdValidator),
-  expenseController.getExpenseById.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.getExpenseById>
-  ) => Promise<void>
+  asyncHandler(expenseController.getExpenseById.bind(expenseController))
 );
 
 /**
@@ -173,10 +148,7 @@ expenseRouter.post(
 expenseRouter.put(
   '/:id',
   validate(updateExpenseValidator),
-  expenseController.updateExpense.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.updateExpense>
-  ) => Promise<void>
+  asyncHandler(expenseController.updateExpense.bind(expenseController))
 );
 
 /**
@@ -186,10 +158,7 @@ expenseRouter.put(
 expenseRouter.delete(
   '/:id',
   validate(expenseIdValidator),
-  expenseController.deleteExpense.bind(expenseController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof expenseController.deleteExpense>
-  ) => Promise<void>
+  asyncHandler(expenseController.deleteExpense.bind(expenseController))
 );
 
 export { expenseTypeRouter, expenseRouter };

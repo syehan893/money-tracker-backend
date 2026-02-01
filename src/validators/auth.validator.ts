@@ -92,9 +92,5 @@ export const updateProfileValidator = [
     .isLength({ min: 2, max: 255 })
     .withMessage('Full name must be between 2 and 255 characters'),
 
-  body('avatarUrl')
-    .optional()
-    .trim()
-    .isURL()
-    .withMessage('Please provide a valid URL for avatar'),
+  body('avatarUrl').optional().trim().isURL().withMessage('Please provide a valid URL for avatar'),
 ];

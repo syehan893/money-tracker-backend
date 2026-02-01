@@ -5,11 +5,7 @@
 
 import { accountRepository, type AccountFilters } from '../repositories/account.repository';
 import { NotFoundError, ValidationError } from '../middleware/error.middleware';
-import type {
-  CreateAccountDto,
-  UpdateAccountDto,
-  AccountSummary,
-} from '../types/api.types';
+import type { CreateAccountDto, UpdateAccountDto, AccountSummary } from '../types/api.types';
 import type { Account, AccountType } from '../types/database.types';
 
 export class AccountService {
@@ -27,11 +23,7 @@ export class AccountService {
   /**
    * Get a specific account by ID
    */
-  async getAccountById(
-    userId: string,
-    accountId: string,
-    accessToken: string
-  ): Promise<Account> {
+  async getAccountById(userId: string, accountId: string, accessToken: string): Promise<Account> {
     const account = await accountRepository.findById(userId, accountId, accessToken);
 
     if (!account) {
@@ -99,11 +91,7 @@ export class AccountService {
   /**
    * Soft delete an account (set is_active to false)
    */
-  async deleteAccount(
-    userId: string,
-    accountId: string,
-    accessToken: string
-  ): Promise<void> {
+  async deleteAccount(userId: string, accountId: string, accessToken: string): Promise<void> {
     // Check if account exists
     const existingAccount = await accountRepository.findById(userId, accountId, accessToken);
 

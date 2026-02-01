@@ -53,10 +53,7 @@ export const createSubscriptionValidator = [
 export const updateSubscriptionValidator = [
   param('id').isUUID().withMessage('Invalid subscription ID format'),
 
-  body('accountId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid account ID format'),
+  body('accountId').optional().isUUID().withMessage('Invalid account ID format'),
 
   body('name')
     .optional()
@@ -64,10 +61,7 @@ export const updateSubscriptionValidator = [
     .isLength({ min: 1, max: 255 })
     .withMessage('Subscription name must be between 1 and 255 characters'),
 
-  body('amount')
-    .optional()
-    .isFloat({ gt: 0 })
-    .withMessage('Amount must be a positive number'),
+  body('amount').optional().isFloat({ gt: 0 }).withMessage('Amount must be a positive number'),
 
   body('billingCycle')
     .optional()
@@ -85,10 +79,7 @@ export const updateSubscriptionValidator = [
     .isLength({ max: 1000 })
     .withMessage('Description cannot exceed 1000 characters'),
 
-  body('isActive')
-    .optional()
-    .isBoolean()
-    .withMessage('isActive must be a boolean value'),
+  body('isActive').optional().isBoolean().withMessage('isActive must be a boolean value'),
 ];
 
 /**
@@ -102,25 +93,16 @@ export const subscriptionIdValidator = [
  * Validation for subscription list filters
  */
 export const subscriptionFiltersValidator = [
-  query('accountId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid account ID format'),
+  query('accountId').optional().isUUID().withMessage('Invalid account ID format'),
 
-  query('isActive')
-    .optional()
-    .isBoolean()
-    .withMessage('isActive must be a boolean value'),
+  query('isActive').optional().isBoolean().withMessage('isActive must be a boolean value'),
 
   query('billingCycle')
     .optional()
     .isIn(BILLING_CYCLE_VALUES)
     .withMessage(`Billing cycle must be one of: ${BILLING_CYCLE_VALUES.join(', ')}`),
 
-  query('page')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
+  query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
 
   query('limit')
     .optional()

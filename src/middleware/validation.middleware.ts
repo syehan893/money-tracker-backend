@@ -11,17 +11,14 @@ import { HTTP_STATUS, ERROR_CODES } from '../config/constants';
  * Middleware to handle validation errors from express-validator
  * Use this after validation chains in routes
  */
-export function handleValidationErrors(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function handleValidationErrors(req: Request, res: Response, next: NextFunction): void {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     const formattedErrors = errors.array().map((error) => ({
       field: 'path' in error ? error.path : 'unknown',
       message: error.msg as string,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       value: 'value' in error ? error.value : undefined,
     }));
 
@@ -46,11 +43,13 @@ export function handleValidationErrors(
  * Combines validation chains with error handling
  */
 export function validate(validations: ValidationChain[]) {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // Run all validations
-    await Promise.all(validations.map((validation) => validation.run(req)));
+  return (req: Request, res: Response, next: NextFunction): void => {
+    void (async (): Promise<void> => {
+      // Run all validations
+      await Promise.all(validations.map((validation) => validation.run(req)));
 
-    // Check for errors
-    handleValidationErrors(req, res, next);
+      // Check for errors
+      handleValidationErrors(req, res, next);
+    })();
   };
 }

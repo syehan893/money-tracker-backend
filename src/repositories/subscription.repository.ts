@@ -5,7 +5,6 @@
 
 import { getSupabaseClientWithAuth } from '../config/database';
 import type {
-  Subscription,
   SubscriptionInsert,
   SubscriptionUpdate,
   SubscriptionWithRelations,
@@ -198,10 +197,7 @@ export class SubscriptionRepository {
   /**
    * Get active subscriptions
    */
-  async findActive(
-    userId: string,
-    accessToken: string
-  ): Promise<SubscriptionWithRelations[]> {
+  async findActive(userId: string, accessToken: string): Promise<SubscriptionWithRelations[]> {
     const { subscriptions } = await this.findAll(userId, accessToken, { isActive: true });
     return subscriptions;
   }

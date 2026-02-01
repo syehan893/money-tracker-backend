@@ -13,11 +13,7 @@ export class TransferController {
    * GET /api/v1/transfers
    * Get all transfers with filters and pagination
    */
-  async getTransfers(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getTransfers(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { accountId, startDate, endDate, page, limit } = req.query as {

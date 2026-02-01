@@ -4,12 +4,8 @@
  */
 
 import { getSupabaseClientWithAuth } from '../config/database';
-import type {
-  Transfer,
-  TransferInsert,
-  TransferWithRelations,
-} from '../types/database.types';
-import { parseSupabaseError, NotFoundError } from '../middleware/error.middleware';
+import type { TransferInsert, TransferWithRelations } from '../types/database.types';
+import { parseSupabaseError } from '../middleware/error.middleware';
 
 export interface TransferFilters {
   accountId?: string;

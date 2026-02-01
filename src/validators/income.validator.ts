@@ -54,10 +54,7 @@ export const updateIncomeTypeValidator = [
     .isFloat({ gt: 0 })
     .withMessage('Target amount must be a positive number'),
 
-  body('isActive')
-    .optional()
-    .isBoolean()
-    .withMessage('isActive must be a boolean value'),
+  body('isActive').optional().isBoolean().withMessage('isActive must be a boolean value'),
 ];
 
 /**
@@ -112,20 +109,11 @@ export const createIncomeValidator = [
 export const updateIncomeValidator = [
   param('id').isUUID().withMessage('Invalid income ID format'),
 
-  body('accountId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid account ID format'),
+  body('accountId').optional().isUUID().withMessage('Invalid account ID format'),
 
-  body('incomeTypeId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid income type ID format'),
+  body('incomeTypeId').optional().isUUID().withMessage('Invalid income type ID format'),
 
-  body('amount')
-    .optional()
-    .isFloat({ gt: 0 })
-    .withMessage('Amount must be a positive number'),
+  body('amount').optional().isFloat({ gt: 0 }).withMessage('Amount must be a positive number'),
 
   body('description')
     .optional()
@@ -133,32 +121,21 @@ export const updateIncomeValidator = [
     .isLength({ max: 1000 })
     .withMessage('Description cannot exceed 1000 characters'),
 
-  body('date')
-    .optional()
-    .isISO8601()
-    .withMessage('Date must be in ISO format (YYYY-MM-DD)'),
+  body('date').optional().isISO8601().withMessage('Date must be in ISO format (YYYY-MM-DD)'),
 ];
 
 /**
  * Validation for income ID parameter
  */
-export const incomeIdValidator = [
-  param('id').isUUID().withMessage('Invalid income ID format'),
-];
+export const incomeIdValidator = [param('id').isUUID().withMessage('Invalid income ID format')];
 
 /**
  * Validation for income list filters
  */
 export const incomeFiltersValidator = [
-  query('accountId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid account ID format'),
+  query('accountId').optional().isUUID().withMessage('Invalid account ID format'),
 
-  query('incomeTypeId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid income type ID format'),
+  query('incomeTypeId').optional().isUUID().withMessage('Invalid income type ID format'),
 
   query('startDate')
     .optional()
@@ -170,10 +147,7 @@ export const incomeFiltersValidator = [
     .isISO8601()
     .withMessage('End date must be in ISO format (YYYY-MM-DD)'),
 
-  query('page')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
+  query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
 
   query('limit')
     .optional()
@@ -185,11 +159,7 @@ export const incomeFiltersValidator = [
  * Validation for monthly summary parameters
  */
 export const monthlySummaryValidator = [
-  param('year')
-    .isInt({ min: 2000, max: 2100 })
-    .withMessage('Year must be between 2000 and 2100'),
+  param('year').isInt({ min: 2000, max: 2100 }).withMessage('Year must be between 2000 and 2100'),
 
-  param('month')
-    .isInt({ min: 1, max: 12 })
-    .withMessage('Month must be between 1 and 12'),
+  param('month').isInt({ min: 1, max: 12 }).withMessage('Month must be between 1 and 12'),
 ];

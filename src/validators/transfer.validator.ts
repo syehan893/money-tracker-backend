@@ -49,18 +49,13 @@ export const createTransferValidator = [
 /**
  * Validation for transfer ID parameter
  */
-export const transferIdValidator = [
-  param('id').isUUID().withMessage('Invalid transfer ID format'),
-];
+export const transferIdValidator = [param('id').isUUID().withMessage('Invalid transfer ID format')];
 
 /**
  * Validation for transfer list filters
  */
 export const transferFiltersValidator = [
-  query('accountId')
-    .optional()
-    .isUUID()
-    .withMessage('Invalid account ID format'),
+  query('accountId').optional().isUUID().withMessage('Invalid account ID format'),
 
   query('startDate')
     .optional()
@@ -72,10 +67,7 @@ export const transferFiltersValidator = [
     .isISO8601()
     .withMessage('End date must be in ISO format (YYYY-MM-DD)'),
 
-  query('page')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
+  query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
 
   query('limit')
     .optional()

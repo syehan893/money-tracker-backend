@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Transfer Routes
  */
@@ -6,6 +7,7 @@ import { Router } from 'express';
 import { transferController } from '../controllers/transfer.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   createTransferValidator,
   transferIdValidator,
@@ -25,10 +27,7 @@ router.use(authenticateUser);
 router.get(
   '/',
   validate(transferFiltersValidator),
-  transferController.getTransfers.bind(transferController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof transferController.getTransfers>
-  ) => Promise<void>
+  asyncHandler(transferController.getTransfers.bind(transferController))
 );
 
 /**
@@ -51,10 +50,7 @@ router.get(
 router.post(
   '/',
   validate(createTransferValidator),
-  transferController.createTransfer.bind(transferController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof transferController.createTransfer>
-  ) => Promise<void>
+  asyncHandler(transferController.createTransfer.bind(transferController))
 );
 
 /**
@@ -64,10 +60,7 @@ router.post(
 router.delete(
   '/:id',
   validate(transferIdValidator),
-  transferController.deleteTransfer.bind(transferController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof transferController.deleteTransfer>
-  ) => Promise<void>
+  asyncHandler(transferController.deleteTransfer.bind(transferController))
 );
 
 export default router;

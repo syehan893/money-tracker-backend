@@ -8,7 +8,6 @@ import type {
   IncomeType,
   IncomeTypeInsert,
   IncomeTypeUpdate,
-  Income,
   IncomeInsert,
   IncomeUpdate,
   IncomeWithRelations,
@@ -377,14 +376,15 @@ export class IncomeRepository {
     }
 
     // Aggregate by type
-    const typeMap = new Map<
-      string,
-      { typeName: string; amount: number; target: number | null }
-    >();
+    const typeMap = new Map<string, { typeName: string; amount: number; target: number | null }>();
     let totalAmount = 0;
 
     for (const income of incomes || []) {
-      const incomeType = income.income_type as { id: string; name: string; target_amount: number | null } | null;
+      const incomeType = income.income_type as {
+        id: string;
+        name: string;
+        target_amount: number | null;
+      } | null;
       if (!incomeType) continue;
 
       const typeId = incomeType.id;
@@ -453,7 +453,7 @@ export class IncomeRepository {
     }
 
     // Calculate progress for each type with a target
-    return (incomeTypes || []).map((type) => {
+    return ((incomeTypes as IncomeType[]) || []).map((type) => {
       const target = Number(type.target_amount);
       const actual = actualMap.get(type.id) || 0;
       const percentage = target > 0 ? Math.min((actual / target) * 100, 100) : 0;

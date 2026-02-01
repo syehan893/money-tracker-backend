@@ -6,13 +6,13 @@ import { Router } from 'express';
 import { subscriptionController } from '../controllers/subscription.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   createSubscriptionValidator,
   updateSubscriptionValidator,
   subscriptionIdValidator,
   subscriptionFiltersValidator,
 } from '../validators/subscription.validator';
-import type { AuthenticatedRequest } from '../types/api.types';
 
 const router = Router();
 
@@ -26,10 +26,7 @@ router.use(authenticateUser);
  */
 router.get(
   '/active',
-  subscriptionController.getActiveSubscriptions.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.getActiveSubscriptions>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.getActiveSubscriptions.bind(subscriptionController))
 );
 
 /**
@@ -39,10 +36,7 @@ router.get(
  */
 router.get(
   '/upcoming',
-  subscriptionController.getUpcomingRenewals.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.getUpcomingRenewals>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.getUpcomingRenewals.bind(subscriptionController))
 );
 
 /**
@@ -52,10 +46,7 @@ router.get(
 router.get(
   '/',
   validate(subscriptionFiltersValidator),
-  subscriptionController.getSubscriptions.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.getSubscriptions>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.getSubscriptions.bind(subscriptionController))
 );
 
 /**
@@ -65,10 +56,7 @@ router.get(
 router.get(
   '/:id',
   validate(subscriptionIdValidator),
-  subscriptionController.getSubscriptionById.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.getSubscriptionById>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.getSubscriptionById.bind(subscriptionController))
 );
 
 /**
@@ -78,10 +66,7 @@ router.get(
 router.post(
   '/',
   validate(createSubscriptionValidator),
-  subscriptionController.createSubscription.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.createSubscription>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.createSubscription.bind(subscriptionController))
 );
 
 /**
@@ -91,10 +76,7 @@ router.post(
 router.put(
   '/:id',
   validate(updateSubscriptionValidator),
-  subscriptionController.updateSubscription.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.updateSubscription>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.updateSubscription.bind(subscriptionController))
 );
 
 /**
@@ -104,10 +86,7 @@ router.put(
 router.delete(
   '/:id',
   validate(subscriptionIdValidator),
-  subscriptionController.deleteSubscription.bind(subscriptionController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof subscriptionController.deleteSubscription>
-  ) => Promise<void>
+  asyncHandler(subscriptionController.deleteSubscription.bind(subscriptionController))
 );
 
 export default router;

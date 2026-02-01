@@ -15,11 +15,7 @@ export class AuthRepository {
   async getProfileById(userId: string): Promise<Profile | null> {
     const supabase = getSupabaseAdmin();
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
     if (error) {
       if (error.code === 'PGRST116') {
@@ -37,11 +33,7 @@ export class AuthRepository {
   async getProfileByEmail(email: string): Promise<Profile | null> {
     const supabase = getSupabaseAdmin();
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('email', email)
-      .single();
+    const { data, error } = await supabase.from('profiles').select('*').eq('email', email).single();
 
     if (error) {
       if (error.code === 'PGRST116') {

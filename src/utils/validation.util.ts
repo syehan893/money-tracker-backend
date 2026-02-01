@@ -83,10 +83,7 @@ export function parsePaginationParams(
   defaultLimit: number = 20
 ): { page: number; limit: number; offset: number } {
   const parsedPage = Math.max(1, parseInt(String(page), 10) || 1);
-  const parsedLimit = Math.min(
-    maxLimit,
-    Math.max(1, parseInt(String(limit), 10) || defaultLimit)
-  );
+  const parsedLimit = Math.min(maxLimit, Math.max(1, parseInt(String(limit), 10) || defaultLimit));
   const offset = (parsedPage - 1) * parsedLimit;
 
   return {

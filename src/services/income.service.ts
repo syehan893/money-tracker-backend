@@ -116,11 +116,7 @@ export class IncomeTypeService {
   /**
    * Delete an income type
    */
-  async deleteIncomeType(
-    userId: string,
-    incomeTypeId: string,
-    accessToken: string
-  ): Promise<void> {
+  async deleteIncomeType(userId: string, incomeTypeId: string, accessToken: string): Promise<void> {
     // Check if income type exists
     const existing = await incomeTypeRepository.findById(userId, incomeTypeId, accessToken);
     if (!existing) {
@@ -144,10 +140,7 @@ export class IncomeService {
     accessToken: string,
     filters?: IncomeFilters & { page?: number; limit?: number }
   ): Promise<PaginatedResponse<IncomeWithRelations>> {
-    const { page, limit, offset } = parsePaginationParams(
-      filters?.page,
-      filters?.limit
-    );
+    const { page, limit, offset } = parsePaginationParams(filters?.page, filters?.limit);
 
     const { incomes, total } = await incomeRepository.findAll(
       userId,

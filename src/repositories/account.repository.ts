@@ -16,11 +16,7 @@ export class AccountRepository {
   /**
    * Get all accounts for a user with optional filters
    */
-  async findAll(
-    userId: string,
-    accessToken: string,
-    filters?: AccountFilters
-  ): Promise<Account[]> {
+  async findAll(userId: string, accessToken: string, filters?: AccountFilters): Promise<Account[]> {
     const supabase = getSupabaseClientWithAuth(accessToken);
 
     let query = supabase
@@ -49,11 +45,7 @@ export class AccountRepository {
   /**
    * Get account by ID
    */
-  async findById(
-    userId: string,
-    accountId: string,
-    accessToken: string
-  ): Promise<Account | null> {
+  async findById(userId: string, accountId: string, accessToken: string): Promise<Account | null> {
     const supabase = getSupabaseClientWithAuth(accessToken);
 
     const { data, error } = await supabase
@@ -218,11 +210,7 @@ export class AccountRepository {
   /**
    * Get account balance
    */
-  async getBalance(
-    userId: string,
-    accountId: string,
-    accessToken: string
-  ): Promise<number | null> {
+  async getBalance(userId: string, accountId: string, accessToken: string): Promise<number | null> {
     const account = await this.findById(userId, accountId, accessToken);
     return account ? Number(account.balance) : null;
   }

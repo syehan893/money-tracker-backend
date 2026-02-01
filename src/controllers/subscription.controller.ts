@@ -60,11 +60,7 @@ export class SubscriptionController {
       const { user, accessToken } = req;
       const { id } = req.params;
 
-      const subscription = await subscriptionService.getSubscriptionById(
-        user.id,
-        id,
-        accessToken
-      );
+      const subscription = await subscriptionService.getSubscriptionById(user.id, id, accessToken);
 
       sendSuccess(res, subscription);
     } catch (error) {
@@ -159,10 +155,7 @@ export class SubscriptionController {
     try {
       const { user, accessToken } = req;
 
-      const subscriptions = await subscriptionService.getActiveSubscriptions(
-        user.id,
-        accessToken
-      );
+      const subscriptions = await subscriptionService.getActiveSubscriptions(user.id, accessToken);
 
       sendSuccess(res, subscriptions);
     } catch (error) {

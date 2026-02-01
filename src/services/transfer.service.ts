@@ -23,10 +23,7 @@ export class TransferService {
     accessToken: string,
     filters?: TransferFilters & { page?: number; limit?: number }
   ): Promise<PaginatedResponse<TransferWithRelations>> {
-    const { page, limit, offset } = parsePaginationParams(
-      filters?.page,
-      filters?.limit
-    );
+    const { page, limit, offset } = parsePaginationParams(filters?.page, filters?.limit);
 
     const { transfers, total } = await transferRepository.findAll(
       userId,

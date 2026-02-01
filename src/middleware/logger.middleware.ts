@@ -15,7 +15,7 @@ morgan.token('user-id', (req: Request) => {
 // Custom morgan token for response time in a readable format
 morgan.token('response-time-ms', (_req: Request, res: Response) => {
   const responseTime = res.getHeader('X-Response-Time');
-  return responseTime ? `${responseTime}` : '-';
+  return responseTime ? `${String(responseTime)}` : '-';
 });
 
 /**

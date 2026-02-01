@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Account Routes
  */
@@ -6,6 +7,7 @@ import { Router } from 'express';
 import { accountController } from '../controllers/account.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validation.middleware';
+import { asyncHandler } from '../utils/asyncHandler';
 import {
   createAccountValidator,
   updateAccountValidator,
@@ -24,13 +26,7 @@ router.use(authenticateUser);
  * Get accounts summary for dashboard
  * Note: This must come before /:id to avoid treating "summary" as an ID
  */
-router.get(
-  '/summary',
-  accountController.getAccountsSummary.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.getAccountsSummary>
-  ) => Promise<void>
-);
+router.get('/summary', asyncHandler(accountController.getAccountsSummary.bind(accountController)));
 
 /**
  * GET /api/v1/accounts
@@ -39,10 +35,7 @@ router.get(
 router.get(
   '/',
   validate(accountFiltersValidator),
-  accountController.getAccounts.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.getAccounts>
-  ) => Promise<void>
+  asyncHandler(accountController.getAccounts.bind(accountController))
 );
 
 /**
@@ -52,10 +45,7 @@ router.get(
 router.get(
   '/:id',
   validate(accountIdValidator),
-  accountController.getAccountById.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.getAccountById>
-  ) => Promise<void>
+  asyncHandler(accountController.getAccountById.bind(accountController))
 );
 
 /**
@@ -91,10 +81,7 @@ router.put(
 router.delete(
   '/:id',
   validate(accountIdValidator),
-  accountController.deleteAccount.bind(accountController) as (
-    req: AuthenticatedRequest,
-    ...args: Parameters<typeof accountController.deleteAccount>
-  ) => Promise<void>
+  asyncHandler(accountController.deleteAccount.bind(accountController))
 );
 
 export default router;

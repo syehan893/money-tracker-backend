@@ -99,16 +99,24 @@ export class AuthController {
         avatarUrl?: string;
       };
 
-      const profile = await authService.updateProfile(user.id, { fullName, avatarUrl }, accessToken);
+      const profile = await authService.updateProfile(
+        user.id,
+        { fullName, avatarUrl },
+        accessToken
+      );
 
-      sendSuccess(res, {
-        id: profile.id,
-        email: profile.email,
-        fullName: profile.full_name,
-        avatarUrl: profile.avatar_url,
-        createdAt: profile.created_at,
-        updatedAt: profile.updated_at,
-      }, 'Profile updated successfully');
+      sendSuccess(
+        res,
+        {
+          id: profile.id,
+          email: profile.email,
+          fullName: profile.full_name,
+          avatarUrl: profile.avatar_url,
+          createdAt: profile.created_at,
+          updatedAt: profile.updated_at,
+        },
+        'Profile updated successfully'
+      );
     } catch (error) {
       next(error);
     }

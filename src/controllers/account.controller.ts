@@ -14,11 +14,7 @@ export class AccountController {
    * GET /api/v1/accounts
    * Get all accounts with optional filters
    */
-  async getAccounts(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getAccounts(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { type, isActive } = req.query;
@@ -66,11 +62,7 @@ export class AccountController {
    * POST /api/v1/accounts
    * Create a new account
    */
-  async createAccount(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async createAccount(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { name, accountType, balance } = req.body as CreateAccountDto;
@@ -91,11 +83,7 @@ export class AccountController {
    * PUT /api/v1/accounts/:id
    * Update an existing account
    */
-  async updateAccount(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async updateAccount(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;
@@ -118,11 +106,7 @@ export class AccountController {
    * DELETE /api/v1/accounts/:id
    * Soft delete an account
    */
-  async deleteAccount(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async deleteAccount(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;

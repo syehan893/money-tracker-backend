@@ -66,7 +66,12 @@ function formatLogEntry(entry: LogEntry): string {
 /**
  * Create a log entry and output it
  */
-function log(level: LogLevel, message: string, context?: string, data?: Record<string, unknown>): void {
+function log(
+  level: LogLevel,
+  message: string,
+  context?: string,
+  data?: Record<string, unknown>
+): void {
   if (!shouldLog(level)) {
     return;
   }
@@ -143,7 +148,13 @@ export const logger = {
 /**
  * Create a child logger with preset context
  */
-export function createLogger(context: string) {
+export function createLogger(context: string): {
+  debug: (message: string, data?: Record<string, unknown>) => void;
+  info: (message: string, data?: Record<string, unknown>) => void;
+  warn: (message: string, data?: Record<string, unknown>) => void;
+  error: (message: string, data?: Record<string, unknown>) => void;
+  logError: (error: Error) => void;
+} {
   return {
     debug(message: string, data?: Record<string, unknown>): void {
       logger.debug(message, context, data);

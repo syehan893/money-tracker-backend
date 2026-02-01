@@ -13,11 +13,7 @@ export class DashboardController {
    * GET /api/v1/dashboard/overview
    * Get complete financial overview
    */
-  async getOverview(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getOverview(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
 
@@ -59,11 +55,7 @@ export class DashboardController {
    * GET /api/v1/dashboard/trends
    * Get financial trends
    */
-  async getTrends(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getTrends(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
 

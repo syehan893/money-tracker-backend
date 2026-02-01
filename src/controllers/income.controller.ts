@@ -143,11 +143,7 @@ export class IncomeController {
    * GET /api/v1/incomes
    * Get all incomes with filters and pagination
    */
-  async getIncomes(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getIncomes(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { accountId, incomeTypeId, startDate, endDate, page, limit } = req.query as {
@@ -178,11 +174,7 @@ export class IncomeController {
    * GET /api/v1/incomes/:id
    * Get income by ID
    */
-  async getIncomeById(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getIncomeById(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;
@@ -199,11 +191,7 @@ export class IncomeController {
    * POST /api/v1/incomes
    * Create income
    */
-  async createIncome(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async createIncome(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { accountId, incomeTypeId, amount, description, date } = req.body as CreateIncomeDto;
@@ -224,11 +212,7 @@ export class IncomeController {
    * PUT /api/v1/incomes/:id
    * Update income
    */
-  async updateIncome(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async updateIncome(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;
@@ -251,11 +235,7 @@ export class IncomeController {
    * DELETE /api/v1/incomes/:id
    * Delete income
    */
-  async deleteIncome(
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async deleteIncome(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user, accessToken } = req;
       const { id } = req.params;
