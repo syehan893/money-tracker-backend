@@ -25,14 +25,48 @@ const monthlySummaryValidator = [
 ];
 
 /**
- * GET /api/v1/dashboard/overview
- * Get complete financial overview
+ * @swagger
+ * tags:
+ *   name: Dashboard
+ *   description: Dashboard analytics
+ */
+
+/**
+ * @swagger
+ * /dashboard/overview:
+ *   get:
+ *     summary: Get financial overview
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Overview data
  */
 router.get('/overview', asyncHandler(dashboardController.getOverview.bind(dashboardController)));
 
 /**
- * GET /api/v1/dashboard/monthly-summary/:year/:month
- * Get monthly breakdown summary
+ * @swagger
+ * /dashboard/monthly-summary/{year}/{month}:
+ *   get:
+ *     summary: Get monthly summary
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: year
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: month
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Monthly summary
  */
 router.get(
   '/monthly-summary/:year/:month',
@@ -41,8 +75,16 @@ router.get(
 );
 
 /**
- * GET /api/v1/dashboard/trends
- * Get financial trends
+ * @swagger
+ * /dashboard/trends:
+ *   get:
+ *     summary: Get financial trends
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Trends data
  */
 router.get('/trends', asyncHandler(dashboardController.getTrends.bind(dashboardController)));
 

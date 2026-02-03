@@ -4,6 +4,7 @@
  */
 
 import type { Request, Response, NextFunction } from 'express';
+import * as Sentry from '@sentry/node';
 import { getSupabaseClient } from '../config/database';
 import type { AuthenticatedRequest } from '../types/api.types';
 import { HTTP_STATUS, ERROR_CODES } from '../config/constants';
@@ -97,6 +98,12 @@ export function authenticateUser(req: Request, res: Response, next: NextFunction
       (req as AuthenticatedRequest).user = user;
       (req as AuthenticatedRequest).accessToken = token;
 
+      // Set Sentry user context
+      Sentry.setUser({
+        id: user.id,
+        email: user.email,
+      });
+
       next();
     } catch (error) {
       console.error('Authentication error:', error);
@@ -140,6 +147,15 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction): 
       if (user) {
         (req as AuthenticatedRequest).user = user;
         (req as AuthenticatedRequest).accessToken = token;
+        
+        // Set Sentry user context
+        Sentry.setUser({
+          id: user.id,
+          email: user.email,
+        });
+      } else {
+        // Clear user scope
+        Sentry.setUser(null);
       }
 
       next();

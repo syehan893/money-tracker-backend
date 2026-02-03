@@ -7,9 +7,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import * as Sentry from '@sentry/node';
 
 import { env } from './config/env';
+import { initSentry } from './config/sentry';
 import { RATE_LIMITS, HTTP_STATUS } from './config/constants';
+import { swaggerSpec } from './config/swagger';
+import swaggerUi from 'swagger-ui-express';
 import { httpLogger, errorHandler, notFoundHandler } from './middleware';
 import {
   authRoutes,
@@ -27,6 +31,9 @@ import {
  * Create and configure Express application
  */
 export function createApp(): Application {
+  // Initialize Sentry
+  initSentry();
+
   const app = express();
 
   // Trust proxy - required for rate limiting behind reverse proxy
@@ -84,6 +91,14 @@ export function createApp(): Application {
     });
   });
 
+  // Optional: Debug Sentry route
+  app.get('/api/debug-sentry', (_req, _res) => {
+    throw new Error('Sentry Debug Error');
+  });
+
+  // Swagger Documentation
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
   // API Routes
   app.use('/api/v1/auth', authRoutes);
   app.use('/api/v1/accounts', accountRoutes);
@@ -94,6 +109,9 @@ export function createApp(): Application {
   app.use('/api/v1/transfers', transferRoutes);
   app.use('/api/v1/subscriptions', subscriptionRoutes);
   app.use('/api/v1/dashboard', dashboardRoutes);
+
+  // The Sentry ErrorHandler must be before any other error middleware and after all controllers
+  Sentry.setupExpressErrorHandler(app);
 
   // 404 handler for unmatched routes
   app.use(notFoundHandler);

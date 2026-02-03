@@ -20,8 +20,39 @@ const router = Router();
 router.use(authenticateUser);
 
 /**
- * GET /api/v1/transfers
- * Get all transfers with filters
+ * @swagger
+ * tags:
+ *   name: Transfers
+ *   description: Transfer management
+ */
+
+/**
+ * @swagger
+ * /transfers:
+ *   get:
+ *     summary: Get all transfers
+ *     tags: [Transfers]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: accountId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: List of transfers
  */
 router.get(
   '/',
@@ -30,8 +61,23 @@ router.get(
 );
 
 /**
- * GET /api/v1/transfers/:id
- * Get transfer by ID
+ * @swagger
+ * /transfers/{id}:
+ *   get:
+ *     summary: Get transfer by ID
+ *     tags: [Transfers]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Transfer details
  */
 router.get(
   '/:id',
@@ -40,8 +86,41 @@ router.get(
 );
 
 /**
- * POST /api/v1/transfers
- * Create transfer
+ * @swagger
+ * /transfers:
+ *   post:
+ *     summary: Create transfer
+ *     tags: [Transfers]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fromAccountId
+ *               - toAccountId
+ *               - amount
+ *               - date
+ *             properties:
+ *               fromAccountId:
+ *                 type: string
+ *                 format: uuid
+ *               toAccountId:
+ *                 type: string
+ *                 format: uuid
+ *               amount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Transfer created
  */
 router.post(
   '/',
@@ -50,8 +129,23 @@ router.post(
 );
 
 /**
- * DELETE /api/v1/transfers/:id
- * Delete transfer
+ * @swagger
+ * /transfers/{id}:
+ *   delete:
+ *     summary: Delete transfer
+ *     tags: [Transfers]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Transfer deleted
  */
 router.delete(
   '/:id',

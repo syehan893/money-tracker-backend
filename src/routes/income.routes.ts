@@ -28,8 +28,23 @@ const incomeTypeRouter = Router();
 incomeTypeRouter.use(authenticateUser);
 
 /**
- * GET /api/v1/income-types
- * Get all income types
+ * @swagger
+ * tags:
+ *   name: Income Types
+ *   description: Income type management
+ */
+
+/**
+ * @swagger
+ * /income-types:
+ *   get:
+ *     summary: Get all income types
+ *     tags: [Income Types]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of income types
  */
 incomeTypeRouter.get(
   '/',
@@ -37,8 +52,25 @@ incomeTypeRouter.get(
 );
 
 /**
- * GET /api/v1/income-types/:id
- * Get income type by ID
+ * @swagger
+ * /income-types/{id}:
+ *   get:
+ *     summary: Get income type by ID
+ *     tags: [Income Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Income type details
+ *       404:
+ *         description: Income type not found
  */
 incomeTypeRouter.get(
   '/:id',
@@ -47,8 +79,31 @@ incomeTypeRouter.get(
 );
 
 /**
- * POST /api/v1/income-types
- * Create income type
+ * @swagger
+ * /income-types:
+ *   post:
+ *     summary: Create income type
+ *     tags: [Income Types]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               target_amount:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Income type created
  */
 incomeTypeRouter.post(
   '/',
@@ -57,8 +112,36 @@ incomeTypeRouter.post(
 );
 
 /**
- * PUT /api/v1/income-types/:id
- * Update income type
+ * @swagger
+ * /income-types/{id}:
+ *   put:
+ *     summary: Update income type
+ *     tags: [Income Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               target_amount:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Income type updated
  */
 incomeTypeRouter.put(
   '/:id',
@@ -67,8 +150,23 @@ incomeTypeRouter.put(
 );
 
 /**
- * DELETE /api/v1/income-types/:id
- * Delete income type
+ * @swagger
+ * /income-types/{id}:
+ *   delete:
+ *     summary: Delete income type
+ *     tags: [Income Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Income type deleted
  */
 incomeTypeRouter.delete(
   '/:id',
@@ -86,9 +184,23 @@ const incomeRouter = Router();
 incomeRouter.use(authenticateUser);
 
 /**
- * GET /api/v1/incomes/target-progress
- * Get target vs actual progress
- * Note: Must come before /:id
+ * @swagger
+ * tags:
+ *   name: Incomes
+ *   description: Income management
+ */
+
+/**
+ * @swagger
+ * /incomes/target-progress:
+ *   get:
+ *     summary: Get target vs actual progress
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Target progress
  */
 incomeRouter.get(
   '/target-progress',
@@ -96,9 +208,27 @@ incomeRouter.get(
 );
 
 /**
- * GET /api/v1/incomes/monthly/:year/:month
- * Get monthly income summary
- * Note: Must come before /:id
+ * @swagger
+ * /incomes/monthly/{year}/{month}:
+ *   get:
+ *     summary: Get monthly income summary
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: year
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: month
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Monthly summary
  */
 incomeRouter.get(
   '/monthly/:year/:month',
@@ -107,8 +237,40 @@ incomeRouter.get(
 );
 
 /**
- * GET /api/v1/incomes
- * Get all incomes with filters
+ * @swagger
+ * /incomes:
+ *   get:
+ *     summary: Get all incomes with filters
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: incomeTypeId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: List of incomes
  */
 incomeRouter.get(
   '/',
@@ -117,8 +279,23 @@ incomeRouter.get(
 );
 
 /**
- * GET /api/v1/incomes/:id
- * Get income by ID
+ * @swagger
+ * /incomes/{id}:
+ *   get:
+ *     summary: Get income by ID
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Income details
  */
 incomeRouter.get(
   '/:id',
@@ -127,8 +304,41 @@ incomeRouter.get(
 );
 
 /**
- * POST /api/v1/incomes
- * Create income
+ * @swagger
+ * /incomes:
+ *   post:
+ *     summary: Create income
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - amount
+ *               - income_type_id
+ *               - account_id
+ *               - date
+ *             properties:
+ *               amount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               income_type_id:
+ *                 type: string
+ *                 format: uuid
+ *               account_id:
+ *                 type: string
+ *                 format: uuid
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Income created
  */
 incomeRouter.post(
   '/',
@@ -137,8 +347,43 @@ incomeRouter.post(
 );
 
 /**
- * PUT /api/v1/incomes/:id
- * Update income
+ * @swagger
+ * /incomes/{id}:
+ *   put:
+ *     summary: Update income
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               amount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               income_type_id:
+ *                 type: string
+ *                 format: uuid
+ *               account_id:
+ *                 type: string
+ *                 format: uuid
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Income updated
  */
 incomeRouter.put(
   '/:id',
@@ -147,8 +392,23 @@ incomeRouter.put(
 );
 
 /**
- * DELETE /api/v1/incomes/:id
- * Delete income
+ * @swagger
+ * /incomes/{id}:
+ *   delete:
+ *     summary: Delete income
+ *     tags: [Incomes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Income deleted
  */
 incomeRouter.delete(
   '/:id',

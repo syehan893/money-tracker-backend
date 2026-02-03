@@ -29,8 +29,23 @@ const expenseTypeRouter = Router();
 expenseTypeRouter.use(authenticateUser);
 
 /**
- * GET /api/v1/expense-types
- * Get all expense types
+ * @swagger
+ * tags:
+ *   name: Expense Types
+ *   description: Expense type management
+ */
+
+/**
+ * @swagger
+ * /expense-types:
+ *   get:
+ *     summary: Get all expense types
+ *     tags: [Expense Types]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of expense types
  */
 expenseTypeRouter.get(
   '/',
@@ -38,8 +53,23 @@ expenseTypeRouter.get(
 );
 
 /**
- * GET /api/v1/expense-types/:id
- * Get expense type by ID
+ * @swagger
+ * /expense-types/{id}:
+ *   get:
+ *     summary: Get expense type by ID
+ *     tags: [Expense Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Expense type details
  */
 expenseTypeRouter.get(
   '/:id',
@@ -48,8 +78,31 @@ expenseTypeRouter.get(
 );
 
 /**
- * POST /api/v1/expense-types
- * Create expense type
+ * @swagger
+ * /expense-types:
+ *   post:
+ *     summary: Create expense type
+ *     tags: [Expense Types]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               budget_amount:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Expense type created
  */
 expenseTypeRouter.post(
   '/',
@@ -58,8 +111,36 @@ expenseTypeRouter.post(
 );
 
 /**
- * PUT /api/v1/expense-types/:id
- * Update expense type
+ * @swagger
+ * /expense-types/{id}:
+ *   put:
+ *     summary: Update expense type
+ *     tags: [Expense Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               budget_amount:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Expense type updated
  */
 expenseTypeRouter.put(
   '/:id',
@@ -68,8 +149,23 @@ expenseTypeRouter.put(
 );
 
 /**
- * DELETE /api/v1/expense-types/:id
- * Delete expense type
+ * @swagger
+ * /expense-types/{id}:
+ *   delete:
+ *     summary: Delete expense type
+ *     tags: [Expense Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Expense type deleted
  */
 expenseTypeRouter.delete(
   '/:id',
@@ -87,9 +183,23 @@ const expenseRouter = Router();
 expenseRouter.use(authenticateUser);
 
 /**
- * GET /api/v1/expenses/budget-status
- * Get budget vs actual for current month
- * Note: Must come before /:id
+ * @swagger
+ * tags:
+ *   name: Expenses
+ *   description: Expense management
+ */
+
+/**
+ * @swagger
+ * /expenses/budget-status:
+ *   get:
+ *     summary: Get budget vs actual for current month
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Budget status
  */
 expenseRouter.get(
   '/budget-status',
@@ -97,9 +207,27 @@ expenseRouter.get(
 );
 
 /**
- * GET /api/v1/expenses/monthly/:year/:month
- * Get monthly expense summary
- * Note: Must come before /:id
+ * @swagger
+ * /expenses/monthly/{year}/{month}:
+ *   get:
+ *     summary: Get monthly expense summary
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: year
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: month
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Monthly summary
  */
 expenseRouter.get(
   '/monthly/:year/:month',
@@ -108,8 +236,40 @@ expenseRouter.get(
 );
 
 /**
- * GET /api/v1/expenses
- * Get all expenses with filters
+ * @swagger
+ * /expenses:
+ *   get:
+ *     summary: Get all expenses with filters
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: expenseTypeId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: List of expenses
  */
 expenseRouter.get(
   '/',
@@ -118,8 +278,23 @@ expenseRouter.get(
 );
 
 /**
- * GET /api/v1/expenses/:id
- * Get expense by ID
+ * @swagger
+ * /expenses/{id}:
+ *   get:
+ *     summary: Get expense by ID
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Expense details
  */
 expenseRouter.get(
   '/:id',
@@ -128,8 +303,41 @@ expenseRouter.get(
 );
 
 /**
- * POST /api/v1/expenses
- * Create expense
+ * @swagger
+ * /expenses:
+ *   post:
+ *     summary: Create expense
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - amount
+ *               - expense_type_id
+ *               - account_id
+ *               - date
+ *             properties:
+ *               amount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               expense_type_id:
+ *                 type: string
+ *                 format: uuid
+ *               account_id:
+ *                 type: string
+ *                 format: uuid
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Expense created
  */
 expenseRouter.post(
   '/',
@@ -138,8 +346,43 @@ expenseRouter.post(
 );
 
 /**
- * PUT /api/v1/expenses/:id
- * Update expense
+ * @swagger
+ * /expenses/{id}:
+ *   put:
+ *     summary: Update expense
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               amount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               expense_type_id:
+ *                 type: string
+ *                 format: uuid
+ *               account_id:
+ *                 type: string
+ *                 format: uuid
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Expense updated
  */
 expenseRouter.put(
   '/:id',
@@ -148,8 +391,23 @@ expenseRouter.put(
 );
 
 /**
- * DELETE /api/v1/expenses/:id
- * Delete expense
+ * @swagger
+ * /expenses/{id}:
+ *   delete:
+ *     summary: Delete expense
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Expense deleted
  */
 expenseRouter.delete(
   '/:id',

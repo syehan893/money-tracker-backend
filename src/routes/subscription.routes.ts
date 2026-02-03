@@ -20,9 +20,23 @@ const router = Router();
 router.use(authenticateUser);
 
 /**
- * GET /api/v1/subscriptions/active
- * Get active subscriptions
- * Note: Must come before /:id
+ * @swagger
+ * tags:
+ *   name: Subscriptions
+ *   description: Subscription management
+ */
+
+/**
+ * @swagger
+ * /subscriptions/active:
+ *   get:
+ *     summary: Get active subscriptions
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of active subscriptions
  */
 router.get(
   '/active',
@@ -30,9 +44,16 @@ router.get(
 );
 
 /**
- * GET /api/v1/subscriptions/upcoming
- * Get upcoming renewals
- * Note: Must come before /:id
+ * @swagger
+ * /subscriptions/upcoming:
+ *   get:
+ *     summary: Get upcoming renewals
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of upcoming renewals
  */
 router.get(
   '/upcoming',
@@ -40,8 +61,16 @@ router.get(
 );
 
 /**
- * GET /api/v1/subscriptions
- * Get all subscriptions with filters
+ * @swagger
+ * /subscriptions:
+ *   get:
+ *     summary: Get all subscriptions
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of subscriptions
  */
 router.get(
   '/',
@@ -50,8 +79,23 @@ router.get(
 );
 
 /**
- * GET /api/v1/subscriptions/:id
- * Get subscription by ID
+ * @swagger
+ * /subscriptions/{id}:
+ *   get:
+ *     summary: Get subscription by ID
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Subscription details
  */
 router.get(
   '/:id',
@@ -60,8 +104,38 @@ router.get(
 );
 
 /**
- * POST /api/v1/subscriptions
- * Create subscription
+ * @swagger
+ * /subscriptions:
+ *   post:
+ *     summary: Create subscription
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - amount
+ *               - billing_cycle
+ *               - next_billing_date
+ *             properties:
+ *               name:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               billing_cycle:
+ *                 type: string
+ *                 enum: [MONTHLY, YEARLY, WEEKLY]
+ *               next_billing_date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Subscription created
  */
 router.post(
   '/',
@@ -70,8 +144,39 @@ router.post(
 );
 
 /**
- * PUT /api/v1/subscriptions/:id
- * Update subscription
+ * @swagger
+ * /subscriptions/{id}:
+ *   put:
+ *     summary: Update subscription
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               billing_cycle:
+ *                 type: string
+ *               next_billing_date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Subscription updated
  */
 router.put(
   '/:id',
@@ -80,8 +185,23 @@ router.put(
 );
 
 /**
- * DELETE /api/v1/subscriptions/:id
- * Delete subscription
+ * @swagger
+ * /subscriptions/{id}:
+ *   delete:
+ *     summary: Delete subscription
+ *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Subscription deleted
  */
 router.delete(
   '/:id',

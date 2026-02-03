@@ -3,6 +3,7 @@
  * Provides structured logging with different levels
  */
 
+import * as Sentry from '@sentry/node';
 import { env, isProduction } from '../config/env';
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -131,6 +132,10 @@ export const logger = {
    * Log error message
    */
   error(message: string, context?: string, data?: Record<string, unknown>): void {
+    Sentry.captureMessage(message, {
+      level: 'error',
+      extra: { context, ...data },
+    });
     log('error', message, context, data);
   },
 
@@ -138,6 +143,9 @@ export const logger = {
    * Log an error object with stack trace
    */
   logError(error: Error, context?: string): void {
+    Sentry.captureException(error, {
+      extra: { context },
+    });
     log('error', error.message, context, {
       name: error.name,
       stack: error.stack,

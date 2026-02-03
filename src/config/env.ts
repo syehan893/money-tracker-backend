@@ -23,6 +23,9 @@ interface EnvConfig {
 
   // Logging
   LOG_LEVEL: string;
+
+  // Sentry
+  SENTRY_DSN: string;
 }
 
 function getEnvVar(key: string, defaultValue?: string): string {
@@ -68,6 +71,9 @@ export const env: EnvConfig = {
 
   // Logging
   LOG_LEVEL: getEnvVar('LOG_LEVEL', 'info'),
+
+  // Sentry
+  SENTRY_DSN: getEnvVar('SENTRY_DSN', ''),
 };
 
 export const isProduction = env.NODE_ENV === 'production';

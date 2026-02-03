@@ -21,15 +21,42 @@ const router = Router();
 router.use(authenticateUser);
 
 /**
- * GET /api/v1/accounts/summary
- * Get accounts summary for dashboard
- * Note: This must come before /:id to avoid treating "summary" as an ID
+ * @swagger
+ * tags:
+ *   name: Accounts
+ *   description: Account management
+ */
+
+/**
+ * @swagger
+ * /accounts/summary:
+ *   get:
+ *     summary: Get accounts summary
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Accounts summary
  */
 router.get('/summary', asyncHandler(accountController.getAccountsSummary.bind(accountController)));
 
 /**
- * GET /api/v1/accounts
- * Get all accounts with optional filters
+ * @swagger
+ * /accounts:
+ *   get:
+ *     summary: Get all accounts
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of accounts
  */
 router.get(
   '/',
@@ -38,8 +65,23 @@ router.get(
 );
 
 /**
- * GET /api/v1/accounts/:id
- * Get a specific account by ID
+ * @swagger
+ * /accounts/{id}:
+ *   get:
+ *     summary: Get account by ID
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Account details
  */
 router.get(
   '/:id',
@@ -48,8 +90,36 @@ router.get(
 );
 
 /**
- * POST /api/v1/accounts
- * Create a new account
+ * @swagger
+ * /accounts:
+ *   post:
+ *     summary: Create account
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - balance
+ *             properties:
+ *               name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *                 enum: [CASH, BANK, CREDIT, WALLET, INVESTMENT, OTHER]
+ *               balance:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Account created
  */
 router.post(
   '/',
@@ -58,8 +128,38 @@ router.post(
 );
 
 /**
- * PUT /api/v1/accounts/:id
- * Update an existing account
+ * @swagger
+ * /accounts/{id}:
+ *   put:
+ *     summary: Update account
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               balance:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Account updated
  */
 router.put(
   '/:id',
@@ -68,8 +168,23 @@ router.put(
 );
 
 /**
- * DELETE /api/v1/accounts/:id
- * Soft delete an account
+ * @swagger
+ * /accounts/{id}:
+ *   delete:
+ *     summary: Delete account
+ *     tags: [Accounts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Account deleted
  */
 router.delete(
   '/:id',
